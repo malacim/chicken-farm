@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   Check,
   ShoppingCart,
@@ -129,9 +130,9 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <a href="/" className="text-2xl font-bold text-[var(--color-primary-dark)]">
+            <Link href="/" className="text-2xl font-bold text-[var(--color-primary-dark)]">
               هلا تشيك
-            </a>
+            </Link>
           </div>
           <div className="hidden md:flex items-center space-x-6 rtl:space-x-reverse">
             <button onClick={() => scrollToSection('features')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">خدماتنا</button>
@@ -140,10 +141,10 @@ export default function Home() {
             <button onClick={() => scrollToSection('faq')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">الأسئلة الشائعة</button>
           </div>
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            <a href="/login" className="text-[var(--color-primary-dark)] hover:underline cursor-pointer transition-all duration-300 hover:text-[var(--color-primary)] ml-4">تسجيل الدخول</a>
-            <a href="/signup" className="btn-sm bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
+            <Link href="/login" className="text-[var(--color-primary-dark)] hover:underline cursor-pointer transition-all duration-300 hover:text-[var(--color-primary)] ml-4">تسجيل الدخول</Link>
+            <Link href="/signup" className="btn-sm bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
               إنشاء حساب
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
@@ -172,9 +173,9 @@ export default function Home() {
               منصة هلا تشيك توفر لك فرص استثمارية مبتكرة في قطاع الدواجن بعوائد مجزية تصل إلى 30% وبنظام شفاف وآمن
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
-              <a href="/signup" className="ml-4 btn bg-white text-[var(--color-primary-dark)] text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
+              <Link href="/signup" className="ml-4 btn bg-white text-[var(--color-primary-dark)] text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
                 ابدأ الاستثمار الآن
-              </a>
+              </Link>
               <button onClick={() => scrollToSection('features')} className="btn bg-transparent text-white border-2 border-white text-lg px-8 py-4 rounded-lg hover:bg-white/10 transition-all font-semibold flex items-center justify-center">
                 اكتشف المزيد
                 <ChevronDown className="mr-2 w-5 h-5" />
@@ -244,10 +245,10 @@ export default function Home() {
                   ))}
                 </ul>
                 <div className="mt-8">
-                  <a href={`/${feature.title.split(' ')[0].toLowerCase()}`} className="text-[var(--color-primary-dark)] font-semibold inline-flex items-center hover:underline">
+                  <Link href={`/${feature.title.split(' ')[0].toLowerCase()}`} className="text-[var(--color-primary-dark)] font-semibold inline-flex items-center hover:underline">
                     عرض التفاصيل
                     <ChevronDown className="transform rotate-90 mr-1 w-5 h-5" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -364,9 +365,9 @@ export default function Home() {
                     <span>{investmentPackages.baidcash.insuranceFee}</span>
                   </div>
                 </div>
-                <a href="/signup" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
+                <Link href="/signup" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
                   استثمر الآن
-                </a>
+                </Link>
               </div>
             </div>
           )}
@@ -418,9 +419,9 @@ export default function Home() {
                     <span>{investmentPackages.kticash.insuranceFee}</span>
                   </div>
                 </div>
-                <a href="/signup" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
+                <Link href="/signup" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
                   استثمر الآن
-                </a>
+                </Link>
               </div>
             </div>
           )}
@@ -464,9 +465,9 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <a href="/insurance" className="btn bg-white text-[var(--color-primary-dark)] px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block font-semibold">
+              <Link href="/insurance" className="btn bg-white text-[var(--color-primary-dark)] px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block font-semibold">
                 المزيد عن صندوق التأمين
-              </a>
+              </Link>
             </div>
             <div className="hidden md:block relative">
               <Image
@@ -521,9 +522,9 @@ export default function Home() {
                 ))}
               </div>
               <div className="mt-10">
-                <a href="/about" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
+                <Link href="/about" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
                   تعرف على قصتنا
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -560,9 +561,9 @@ export default function Home() {
               <p className="text-[var(--color-text-secondary)] mb-4">
                 لم تجد إجابة لسؤالك؟ لا تتردد في التواصل معنا
               </p>
-              <a href="/contact" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
+              <Link href="/contact" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
                 تواصل معنا
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -582,7 +583,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-md relative">
-              <div className="text-4xl text-[var(--color-primary-dark)]/10 absolute top-4 right-4 font-serif">"</div>
+              <div className="text-4xl text-[var(--color-primary-dark)]/10 absolute top-4 right-4 font-serif">&quot;</div>
               <p className="mb-6 relative z-10 text-[var(--color-text-secondary)]">
                 استثمرت في حزمة بايد كاش منذ 6 أشهر وكانت التجربة رائعة. أحصل على أرباحي بانتظام والفريق متعاون جداً.
               </p>
@@ -598,7 +599,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-8 rounded-lg shadow-md relative">
-              <div className="text-4xl text-[var(--color-primary-dark)]/10 absolute top-4 right-4 font-serif">"</div>
+              <div className="text-4xl text-[var(--color-primary-dark)]/10 absolute top-4 right-4 font-serif">&quot;</div>
               <p className="mb-6 relative z-10 text-[var(--color-text-secondary)]">
                 كمزارع، وفرت لي المنصة فرصة توسيع مشروعي والوصول إلى مستثمرين جدد. الدعم الفني ممتاز والمتابعة مستمرة.
               </p>
@@ -614,7 +615,7 @@ export default function Home() {
             </div>
 
             <div className="bg-white p-8 rounded-lg shadow-md relative">
-              <div className="text-4xl text-[var(--color-primary-dark)]/10 absolute top-4 right-4 font-serif">"</div>
+              <div className="text-4xl text-[var(--color-primary-dark)]/10 absolute top-4 right-4 font-serif">&quot;</div>
               <p className="mb-6 relative z-10 text-[var(--color-text-secondary)]">
                 أحب التنوع في حزم الاستثمار والشفافية الكاملة في عرض البيانات. صندوق التأمين يعطي شعوراً بالأمان لرأس المال.
               </p>
@@ -664,12 +665,12 @@ export default function Home() {
             سجل الآن واستفد من فرص استثمارية مميزة في عالم الدواجن مع عوائد مضمونة وشفافية كاملة
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="/signup" className="btn bg-[var(--color-primary-dark)] text-white text-lg px-10 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
+            <Link href="/signup" className="btn bg-[var(--color-primary-dark)] text-white text-lg px-10 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
               إنشاء حساب
-            </a>
-            <a href="/contact" className="btn bg-transparent border-2 border-[var(--color-primary-dark)] text-[var(--color-primary-dark)] text-lg px-10 py-4 rounded-lg hover:bg-[var(--color-primary-dark)]/10 transition-all font-semibold">
+            </Link>
+            <Link href="/contact" className="btn bg-transparent border-2 border-[var(--color-primary-dark)] text-[var(--color-primary-dark)] text-lg px-10 py-4 rounded-lg hover:bg-[var(--color-primary-dark)]/10 transition-all font-semibold">
               تواصل معنا
-            </a>
+            </Link>
           </div>
           <div className="mt-8 flex justify-center items-center gap-2 text-[var(--color-text-secondary)]">
             <MessageCircle className="w-5 h-5" />
@@ -688,45 +689,45 @@ export default function Home() {
                 منصة استثمارية رائدة في مجال الدواجن، نربط المستثمرين بالمزارعين لتحقيق عوائد مجزية.
               </p>
               <div className="flex space-x-4 rtl:space-x-reverse">
-                <a href="#" className="opacity-80 hover:opacity-100 transition-opacity">
+                <Link href="#" className="opacity-80 hover:opacity-100 transition-opacity">
                   <span className="sr-only">فيسبوك</span>
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
                   </svg>
-                </a>
-                <a href="#" className="opacity-80 hover:opacity-100 transition-opacity">
+                </Link>
+                <Link href="#" className="opacity-80 hover:opacity-100 transition-opacity">
                   <span className="sr-only">انستغرام</span>
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clipRule="evenodd" />
                   </svg>
-                </a>
-                <a href="#" className="opacity-80 hover:opacity-100 transition-opacity">
+                </Link>
+                <Link href="#" className="opacity-80 hover:opacity-100 transition-opacity">
                   <span className="sr-only">تويتر</span>
                   <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                   </svg>
-                </a>
+                </Link>
               </div>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold mb-4">روابط سريعة</h3>
               <ul className="space-y-2 opacity-80">
-                <li><a href="/" className="hover:underline">الرئيسية</a></li>
-                <li><a href="/about" className="hover:underline">عن المنصة</a></li>
-                <li><a href="/packages" className="hover:underline">حزم الاستثمار</a></li>
-                <li><a href="/insurance" className="hover:underline">صندوق التأمين</a></li>
-                <li><a href="/marketplace" className="hover:underline">السوق</a></li>
+                <li><Link href="/" className="hover:underline">الرئيسية</Link></li>
+                <li><Link href="/about" className="hover:underline">عن المنصة</Link></li>
+                <li><Link href="/packages" className="hover:underline">حزم الاستثمار</Link></li>
+                <li><Link href="/insurance" className="hover:underline">صندوق التأمين</Link></li>
+                <li><Link href="/marketplace" className="hover:underline">السوق</Link></li>
               </ul>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold mb-4">الدعم</h3>
               <ul className="space-y-2 opacity-80">
-                <li><a href="/faq" className="hover:underline">الأسئلة الشائعة</a></li>
-                <li><a href="/contact" className="hover:underline">تواصل معنا</a></li>
-                <li><a href="/terms" className="hover:underline">الشروط والأحكام</a></li>
-                <li><a href="/privacy" className="hover:underline">سياسة الخصوصية</a></li>
+                <li><Link href="/faq" className="hover:underline">الأسئلة الشائعة</Link></li>
+                <li><Link href="/contact" className="hover:underline">تواصل معنا</Link></li>
+                <li><Link href="/terms" className="hover:underline">الشروط والأحكام</Link></li>
+                <li><Link href="/privacy" className="hover:underline">سياسة الخصوصية</Link></li>
               </ul>
             </div>
 
