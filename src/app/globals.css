@@ -1,0 +1,400 @@
+@import "tailwindcss";
+
+/* تعريف سمات التصميم باستخدام @theme الجديدة في Tailwind CSS v4 */
+@theme {
+  /* ألوان رئيسية */
+  --color-primary: #4CAF50;
+  --color-primary-light: #81C784;
+  --color-primary-dark: #2E7D32;
+
+  --color-secondary: #F5F0E1;
+  --color-secondary-dark: #E6DFC8;
+
+  --color-accent-yellow: #FFC107;
+  --color-accent-gold: #D4AF37;
+
+  /* ألوان وظيفية */
+  --color-success: #4CAF50;
+  --color-warning: #FF9800;
+  --color-error: #F44336;
+  --color-info: #2196F3;
+
+  /* ألوان محايدة */
+  --color-neutral-100: #FFFFFF;
+  --color-neutral-200: #F5F5F5;
+  --color-neutral-300: #E0E0E0;
+  --color-neutral-400: #BDBDBD;
+  --color-neutral-500: #9E9E9E;
+  --color-neutral-600: #757575;
+  --color-neutral-700: #616161;
+  --color-neutral-800: #424242;
+  --color-neutral-900: #212121;
+
+  /* ألوان النصوص */
+  --color-text-primary: #212121;
+  --color-text-secondary: #757575;
+  --color-text-disabled: #9E9E9E;
+  --color-text-light: #FFFFFF;
+
+  /* ألوان لوحات التحكم المخصصة */
+  --color-myfarm-primary: #4CAF50;
+  --color-myfarm-secondary: #F5F0E1;
+  --color-myfarm-accent: #FFC107;
+
+  --color-investfarm-primary: #2E7D32;
+  --color-investfarm-secondary: #F5F0E1;
+  --color-investfarm-accent: #D4AF37;
+
+  --color-marketchick-primary: #81C784;
+  --color-marketchick-secondary: #E6DFC8;
+  --color-marketchick-accent: #FFC107;
+
+  --color-chickadmin-primary: #2E7D32;
+  --color-chickadmin-secondary: #424242;
+  --color-chickadmin-accent: #D4AF37;
+
+  /* الخطوط */
+  --font-sans: Cairo, Tajawal, sans-serif;
+  --font-heading: Cairo, Tajawal, sans-serif;
+
+  /* أحجام الخط */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+
+  /* أوزان الخط */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* نصف قطر الحدود */
+  --border-radius-none: 0;
+  --border-radius-sm: 0.125rem;
+  --border-radius-DEFAULT: 0.25rem;
+  --border-radius-md: 0.25rem;
+  --border-radius-lg: 0.5rem;
+  --border-radius-xl: 0.75rem;
+  --border-radius-2xl: 1rem;
+  --border-radius-full: 9999px;
+
+  /* الظلال */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-DEFAULT: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+  /* المساحات */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+
+  /* نقاط فاصلة للتصميم المتجاوب */
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+
+  /* الانتقالات والتأثيرات الحركية */
+  --transition-duration-fast: 150ms;
+  --transition-duration-DEFAULT: 300ms;
+  --transition-duration-normal: 300ms;
+  --transition-duration-slow: 500ms;
+
+  --transition-timing-function-DEFAULT: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* طبقات z-index */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+}
+
+/* تعريف الفئات المخصصة باستخدام قيم @theme */
+@layer components {
+  /* الأزرار */
+  .btn {
+    @apply px-4 py-2 rounded font-medium transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-[--color-primary] text-[--color-text-light] hover:bg-[--color-primary-dark];
+  }
+
+  .btn-secondary {
+    @apply bg-[--color-secondary] text-[--color-text-primary] hover:bg-[--color-secondary-dark];
+  }
+
+  .btn-accent {
+    @apply bg-[--color-accent-yellow] text-[--color-text-primary] hover:bg-[--color-accent-gold];
+  }
+
+  .btn-success {
+    @apply bg-[--color-success] text-[--color-text-light];
+  }
+
+  .btn-warning {
+    @apply bg-[--color-warning] text-[--color-text-light];
+  }
+
+  .btn-error {
+    @apply bg-[--color-error] text-[--color-text-light];
+  }
+
+  .btn-sm {
+    @apply px-3 py-1 text-[--font-size-sm];
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-[--font-size-lg];
+  }
+
+  /* البطاقات */
+  .card {
+    @apply bg-[--color-neutral-100] rounded-lg shadow p-6;
+  }
+
+  .card-myfarm {
+    @apply border-l-4 border-[--color-myfarm-primary];
+  }
+
+  .card-investfarm {
+    @apply border-l-4 border-[--color-investfarm-primary];
+  }
+
+  /* لوحة القياس */
+  .dashboard-container {
+    @apply p-6 bg-[--color-secondary]/30;
+  }
+
+  .dashboard-header {
+    @apply mb-6 flex justify-between items-center;
+  }
+
+  .dashboard-title {
+    @apply text-[--font-size-2xl] font-semibold text-[--color-primary-dark];
+  }
+
+  .dashboard-stats {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8;
+  }
+
+  .stat-card {
+    @apply bg-white rounded-lg shadow p-4 flex flex-col;
+  }
+
+  .stat-title {
+    @apply text-[--font-size-sm] text-[--color-text-secondary] font-medium mb-1;
+  }
+
+  .stat-value {
+    @apply text-[--font-size-2xl] font-bold text-[--color-primary-dark];
+  }
+
+  /* النماذج */
+  .form-group {
+    @apply mb-4;
+  }
+
+  .form-label {
+    @apply block text-[--font-size-sm] font-medium text-[--color-text-primary] mb-1;
+  }
+
+  .form-input {
+    @apply w-full p-2 border border-[--color-neutral-300] rounded focus:outline-none focus:ring-2 focus:ring-[--color-primary]/50 focus:border-[--color-primary];
+  }
+
+  .form-select {
+    @apply w-full p-2 border border-[--color-neutral-300] rounded focus:outline-none focus:ring-2 focus:ring-[--color-primary]/50 focus:border-[--color-primary];
+  }
+
+  .form-checkbox {
+    @apply w-4 h-4 border border-[--color-neutral-300] rounded focus:ring-2 focus:ring-[--color-primary]/50 text-[--color-primary];
+  }
+
+  /* التنبيهات */
+  .alert {
+    @apply p-4 rounded mb-4;
+  }
+
+  .alert-success {
+    @apply bg-[--color-success]/10 text-[--color-success] border border-[--color-success]/20;
+  }
+
+  .alert-warning {
+    @apply bg-[--color-warning]/10 text-[--color-warning] border border-[--color-warning]/20;
+  }
+
+  .alert-error {
+    @apply bg-[--color-error]/10 text-[--color-error] border border-[--color-error]/20;
+  }
+
+  .alert-info {
+    @apply bg-[--color-info]/10 text-[--color-info] border border-[--color-info]/20;
+  }
+
+  /* شرائط التقدم */
+  .progress-container {
+    @apply w-full bg-[--color-neutral-200] rounded-full h-2.5 mb-4;
+  }
+
+  .progress-bar {
+    @apply h-2.5 rounded-full;
+  }
+
+  .progress-bar-primary {
+    @apply bg-[--color-primary];
+  }
+
+  .progress-bar-success {
+    @apply bg-[--color-success];
+  }
+
+  /* جداول */
+  .table-container {
+    @apply w-full overflow-x-auto rounded-lg shadow;
+  }
+
+  .table {
+    @apply w-full bg-white;
+  }
+
+  .table th {
+    @apply px-6 py-3 text-right text-[--font-size-xs] font-medium text-[--color-primary-dark] uppercase tracking-wider bg-[--color-secondary]/50;
+  }
+
+  .table td {
+    @apply px-6 py-4 text-[--font-size-sm] text-[--color-text-primary];
+  }
+
+  .table tr {
+    @apply border-b border-[--color-neutral-200];
+  }
+
+  .table tr:last-child {
+    @apply border-b-0;
+  }
+
+  .table-striped tr:nth-child(even) {
+    @apply bg-[--color-secondary]/20;
+  }
+
+  /* الشارات */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-[--font-size-xs] font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-[--color-primary]/10 text-[--color-primary];
+  }
+
+  .badge-success {
+    @apply bg-[--color-success]/10 text-[--color-success];
+  }
+
+  .badge-warning {
+    @apply bg-[--color-warning]/10 text-[--color-warning];
+  }
+
+  .badge-error {
+    @apply bg-[--color-error]/10 text-[--color-error];
+  }
+}
+
+/* تعديلات إضافية خاصة للنص من اليمين إلى اليسار */
+html[dir="rtl"] {
+  .table th, .table td {
+    @apply text-right;
+  }
+
+  .card-myfarm, .card-investfarm {
+    @apply border-l-0 border-r-4;
+  }
+}
+
+/* الخطوط العربية */
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('/fonts/Cairo-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('/fonts/Tajawal-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('/fonts/Tajawal-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('/fonts/Tajawal-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tajawal';
+  src: url('/fonts/Tajawal-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
