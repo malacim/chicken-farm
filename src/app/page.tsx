@@ -27,7 +27,7 @@ export default function Home() {
   const features = [
     {
       icon: <Chicken className="w-10 h-10 text-[var(--color-primary-dark)]" />,
-      title: "بايد كاش",
+      title: "بيض كاش",
       description: "استثمر في تأجير الدجاج البياض واحصل على عوائد شهرية مضمونة بنسبة تصل إلى 30%",
       benefits: [
         "استثمار مرن من 60 إلى 365 يوم",
@@ -66,7 +66,7 @@ export default function Home() {
 
   const investmentPackages = {
     baidcash: {
-      title: "بايد كاش - الاستثمار في الدجاج البياض",
+      title: "بيض كاش - الاستثمار في الدجاج البياض",
       description: "استثمر في تأجير الدجاج البياض واحصل على عوائد شهرية مضمونة تصل إلى 30%",
       unitPrice: "15 درهم / دجاجة / شهر",
       duration: ["60 يوم", "90 يوم", "180 يوم", "365 يوم"],
@@ -127,11 +127,12 @@ export default function Home() {
   return (
     <div dir="rtl" className="bg-[var(--color-secondary)] font-[var(--font-sans)] text-[var(--color-text-primary)]">
       {/* Navigation Bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-2">
+            <Image src="/images/logo-c.png" alt="Logo" width={50} height={50}  />
             <Link href="/" className="text-2xl font-bold text-[var(--color-primary-dark)]">
-              هلا تشيك
+              HlaChick
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-6 rtl:space-x-reverse">
@@ -155,7 +156,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-l from-[var(--color-primary-dark)]/90 to-[var(--color-primary-dark)]/40 z-10"></div>
           <Image
-            src="/images/hero-bg.jpg"
+            src="/images/hero-bg-2.jpeg"
             alt="مزرعة دواجن"
             fill
             className="object-cover object-center"

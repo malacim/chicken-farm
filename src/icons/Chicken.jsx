@@ -5,7 +5,6 @@ const SvgIcon = ({className}) => (
     xmlns="http://www.w3.org/2000/svg"
     width="800"
     height="800"
-    ariaHidden="true"
     className={className}
     viewBox="0 0 128 128"
   >
