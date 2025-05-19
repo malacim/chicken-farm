@@ -14,8 +14,11 @@ import {
 import { useState } from 'react';
 import Chicken from '@/icons/Chicken';
 import Chick from '@/icons/Chick';
+import useAuthStore from '@/store/useAuthStore';
 
 export default function Home() {
+  const { user } = useAuthStore();
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -132,10 +135,10 @@ export default function Home() {
       {/* Navigation Bar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <Image src="/images/logo-c.png" alt="Logo" width={50} height={50}  />
+          <div className="flex items-center">
+            <Image src="/images/logo-d.png" alt="Logo" width={50} height={50} />
             <Link href="/" className="text-2xl font-bold text-[var(--color-primary-dark)]">
-              HlaChick
+              HalaChick
             </Link>
           </div>
           <div className="hidden md:flex items-center space-x-6 rtl:space-x-reverse">
@@ -145,10 +148,20 @@ export default function Home() {
             <button onClick={() => scrollToSection('faq')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">الأسئلة الشائعة</button>
           </div>
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            <Link href="/auth/login" className="text-[var(--color-primary-dark)] hover:underline cursor-pointer transition-all duration-300 hover:text-[var(--color-primary)] ml-4">تسجيل الدخول</Link>
-            <Link href="/auth/register" className="btn-sm bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
-              إنشاء حساب
-            </Link>
+            {user ? (
+              <Link href="/dashboard" className="px-4 py-2 rounded-lg bg-[var(--color-primary-dark)] text-[var(--color-text-light)] hover:bg-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">
+                لوحة التحكم
+              </Link>
+            ) : (
+              <>
+                <Link href="/auth/login" className="text-[var(--color-primary-dark)] hover:underline cursor-pointer transition-all duration-300 hover:text-[var(--color-primary)] ml-4">
+                  تسجيل الدخول
+                </Link>
+                <Link href="/auth/register" className="btn-sm bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
+                  إنشاء حساب
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -649,9 +662,9 @@ export default function Home() {
               <input
                 type="email"
                 placeholder="البريد الإلكتروني"
-                className="px-6 py-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-right w-full md:w-auto md:min-w-80"
+                className="px-6 py-3 rounded-lg text-white text-right w-full md:w-auto md:min-w-80 bg-[rgba(255,255,255,0.1)]"
               />
-              <button className="bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-white font-semibold px-8 py-3 rounded-lg transition-all">
+              <button className="bg-[var(--color-primary-dark)] hover:bg-[var(--color-primary-dark)]/90 text-white font-semibold px-8 py-3 rounded-lg transition-all">
                 اشتراك
               </button>
             </div>
@@ -688,7 +701,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-2xl font-bold mb-6">هلا تشيك</h3>
+              <h3 className="text-2xl font-bold mb-6">HalaChick</h3>
               <p className="opacity-80 mb-4">
                 منصة استثمارية رائدة في مجال الدواجن، نربط المستثمرين بالمزارعين لتحقيق عوائد مجزية.
               </p>
@@ -755,7 +768,7 @@ export default function Home() {
           </div>
 
           <div className="border-t border-white/20 mt-12 pt-8 text-center opacity-70">
-            <p>© {new Date().getFullYear()} هلا تشيك. جميع الحقوق محفوظة.</p>
+            <p>© {new Date().getFullYear()} HalaChick. جميع الحقوق محفوظة.</p>
           </div>
         </div>
       </footer>

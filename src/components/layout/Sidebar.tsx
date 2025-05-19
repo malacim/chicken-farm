@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { LogOut, Home, Settings, User, BarChart2, ShoppingCart } from 'lucide-react';
 import useAuthStore from '@/store/useAuthStore';
+import Image from 'next/image';
 
 interface NavItem {
   href: string;
@@ -46,13 +47,18 @@ export default function Sidebar() {
 
   const navItems = getNavItems();
 
+  const handleLogoClick = () => {
+    router.push('/');
+  };
+
   return (
     <aside className="fixed right-0 top-0 w-72 h-full bg-white shadow-xl z-10 transition-all duration-300">
       <div className="flex flex-col h-full">
         {/* Logo Section */}
-        <div className="p-6 border-b border-gray-100">
+        <div className="p-6 border-b border-gray-100 flex items-center cursor-pointer" onClick={handleLogoClick}>
+          <Image src="/images/logo-d.png" alt="Logo" width={50} height={50} />
           <h1 className="text-2xl font-bold bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] bg-clip-text text-transparent">
-            HlaChick
+            HalaChick
           </h1>
         </div>
 
@@ -66,7 +72,7 @@ export default function Sidebar() {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
-                
+
                 return (
                   <li key={item.href}>
                     <Link
@@ -79,7 +85,7 @@ export default function Sidebar() {
                     >
                       <Icon className={`h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-[var(--color-primary)]'}`} />
                       <span className="font-medium">{item.label}</span>
-                      
+
                       {isActive && (
                         <span className="mr-auto h-2 w-2 rounded-full bg-white"></span>
                       )}
@@ -97,12 +103,12 @@ export default function Sidebar() {
             <div className="flex-shrink-0 w-10 h-10 bg-[var(--color-primary)]/10 rounded-full flex items-center justify-center">
               <User className="h-5 w-5 text-[var(--color-primary)]" />
             </div>
-            
+
             <div className="flex-1 min-w-0 mr-3">
               <p className="font-medium text-gray-900 truncate">{user?.fullName}</p>
               <p className="text-xs text-gray-500 truncate">{user?.email}</p>
             </div>
-            
+
             <button
               onClick={handleLogout}
               className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
