@@ -40,8 +40,9 @@ export default function Login() {
 
       setAuth(data.user, data.token);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: Error | unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

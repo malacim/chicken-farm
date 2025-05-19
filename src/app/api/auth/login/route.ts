@@ -33,7 +33,8 @@ export async function POST(request: Request) {
       { expiresIn: '7d' }
     );
 
-    const { password: _, ...userWithoutPassword } = user.toObject();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...userWithoutPassword } = user.toObject();
 
     const response = NextResponse.json({
       user: userWithoutPassword,
