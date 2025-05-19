@@ -92,16 +92,19 @@ export default function Home() {
       icon: <Users className="w-12 h-12 mb-4 text-[var(--color-primary-dark)]" />,
       title: "المستثمرون",
       description: "اختر حزم الاستثمار، تتبع الأرباح، وطلب السحب بكل سهولة من خلال لوحة تحكم خاصة",
+      link: "/auth/register?role=investor"
     },
     {
       icon: <BarChart3 className="w-12 h-12 mb-4 text-[var(--color-primary-dark)]" />,
       title: "المزارعون",
-      description: "سجل قطعان الدواجن، تابع المدفوعات، واستفد من الدعم الفني المستمر"
+      description: "سجل قطعان الدواجن، تابع المدفوعات، واستفد من الدعم الفني المستمر",
+      link: "/auth/register?role=farmer"
     },
     {
       icon: <ShoppingCart className="w-12 h-12 mb-4 text-[var(--color-primary-dark)]" />,
-      title: "المتسوقون",
-      description: "تصفح منتجات الدواجن الطازجة وقم بالشراء مباشرة من المزارعين بأسعار تنافسية"
+      title: "المشترون",
+      description: "استفد من منتجات طازجة وعالية الجودة مباشرة من المزارع",
+      link: "/auth/register?role=market_buyer"
     }
   ];
 
@@ -142,8 +145,8 @@ export default function Home() {
             <button onClick={() => scrollToSection('faq')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">الأسئلة الشائعة</button>
           </div>
           <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            <Link href="/login" className="text-[var(--color-primary-dark)] hover:underline cursor-pointer transition-all duration-300 hover:text-[var(--color-primary)] ml-4">تسجيل الدخول</Link>
-            <Link href="/signup" className="btn-sm bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
+            <Link href="/auth/login" className="text-[var(--color-primary-dark)] hover:underline cursor-pointer transition-all duration-300 hover:text-[var(--color-primary)] ml-4">تسجيل الدخول</Link>
+            <Link href="/auth/register" className="btn-sm bg-[var(--color-primary-dark)] text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all">
               إنشاء حساب
             </Link>
           </div>
@@ -269,17 +272,17 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             {userRoles.map((role, index) => (
-              <div key={index} className="text-center p-8 bg-white rounded-xl shadow-md hover:shadow-lg transition-all">
+              <Link
+                key={index}
+                href={role.link}
+                className="bg-white p-8 rounded-lg shadow-lg text-center transform transition duration-300 hover:scale-105 hover:shadow-xl"
+              >
                 {role.icon}
-                <h3 className="text-xl font-semibold text-[var(--color-primary-dark)] mb-3">
-                  {role.title}
-                </h3>
-                <p className="text-[var(--color-text-secondary)]">
-                  {role.description}
-                </p>
-              </div>
+                <h3 className="text-xl font-semibold mb-4">{role.title}</h3>
+                <p className="text-gray-600">{role.description}</p>
+              </Link>
             ))}
           </div>
         </div>
@@ -301,17 +304,17 @@ export default function Home() {
               <div className="inline-flex rounded-md shadow-sm p-1 bg-gray-100">
                 <button
                   onClick={() => setActiveTab('baidcash')}
-                  className={`px-6 py-2 text-sm font-medium rounded-md transition-all ${
+                  className={`px-6 py-2 text-sm font-medium rounded-md transition-all cursor-pointer ${
                     activeTab === 'baidcash'
                       ? 'bg-[var(--color-primary-dark)] text-white'
                       : 'bg-transparent text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  بايد كاش
+                  البيض كاش
                 </button>
                 <button
                   onClick={() => setActiveTab('kticash')}
-                  className={`px-6 py-2 text-sm font-medium rounded-md transition-all ${
+                  className={`px-6 py-2 text-sm font-medium rounded-md transition-all cursor-pointer ${
                     activeTab === 'kticash'
                       ? 'bg-[var(--color-primary-dark)] text-white'
                       : 'bg-transparent text-gray-700 hover:bg-gray-200'

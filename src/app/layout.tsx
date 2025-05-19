@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo, Tajawal } from "next/font/google";
 import "./globals.css";
+import AuthInitializer from "@/components/auth/AuthInitializer";
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${cairo.variable} ${tajawal.variable} antialiased font-sans bg-[--color-neutral-100]`}
       >
+        <AuthInitializer />
         {children}
       </body>
     </html>
