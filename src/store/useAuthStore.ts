@@ -1,7 +1,5 @@
 import { create } from 'zustand';
-import { setCookie, getCookie, removeCookie } from '@/utils/cookies';
-
-const isBrowser = typeof window !== 'undefined';
+import api from '@/lib/apiService';
 
 interface User {
   _id: string;
@@ -20,17 +18,15 @@ interface User {
 
 interface AuthState {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
   initialized: boolean;
-  initialize: () => void;
-  setAuth: (user: User, token: string) => void;
-  logout: (callback?: () => void) => void;
+  initialize: () => Promise<void>;
+  setAuth: (user: User) => void;
+  logout: (callback?: () => void) => Promise<void>;
 }
 
 const defaultState = {
   user: null,
-  token: null,
   isAuthenticated: false,
   initialized: false
 };
@@ -38,57 +34,41 @@ const defaultState = {
 const useAuthStore = create<AuthState>()((set, get) => ({
   ...defaultState,
 
-  initialize: () => {
-    if (!isBrowser || get().initialized) return;
+  initialize: async () => {
+    if (get().initialized) return;
 
     try {
-      const userCookie = JSON.parse(getCookie('user') || '{}');
-      const tokenCookie = JSON.parse(getCookie('auth-token') || '{}');
-
-      if (userCookie && tokenCookie && userCookie._id && userCookie.role) {
-        set({
-          user: userCookie,
-          token: tokenCookie.token,
-          isAuthenticated: true,
-          initialized: true
-        });
-      } else {
-        set({ initialized: true });
-      }
-    } catch (e) {
-      console.error('Error initializing auth state from cookies:', e);
+      const response = await api.get('/auth/me');
+      set({
+        user: response.data,
+        isAuthenticated: true,
+        initialized: true
+      });
+    } catch (error) {
       set({ initialized: true });
     }
   },
 
-  setAuth: (user, token) => {
-    setCookie('user', JSON.stringify(user));
-    setCookie('auth-token', JSON.stringify({ token }));
-
-    set({ user, token, isAuthenticated: true, initialized: true });
+  setAuth: (user) => {
+    set({
+      user,
+      isAuthenticated: true,
+      initialized: true
+    });
   },
 
   logout: async (callback) => {
-    const currentToken = get().token;
-
-    if (currentToken) {
-      try {
-        await fetch('/api/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token: currentToken }),
-        });
-      } catch (error) {
-        console.error('Error logging out:', error);
-      }
+    try {
+      await api.post('/auth/logout');
+    } catch (error) {
+      console.error('Error logging out:', error);
     }
 
-    removeCookie('user');
-    removeCookie('auth-token');
-
-    set({ user: null, token: null, isAuthenticated: false, initialized: true });
+    set({
+      user: null,
+      isAuthenticated: false,
+      initialized: true
+    });
 
     if (callback) callback();
   },

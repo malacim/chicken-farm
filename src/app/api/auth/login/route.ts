@@ -38,7 +38,6 @@ export async function POST(request: Request) {
 
     const response = NextResponse.json({
       user: userWithoutPassword,
-      token,
     });
 
     response.cookies.set('auth-token', token, {
@@ -46,6 +45,7 @@ export async function POST(request: Request) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60,
+      path: '/',
     });
 
     return response;

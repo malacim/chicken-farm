@@ -1,16 +1,16 @@
 'use client';
 
 import { ReactNode } from 'react';
-import Sidebar from './Sidebar';
+import AdminSidebar from './AdminSidebar';
 
-interface DashboardLayoutProps {
+interface AdminLayoutProps {
   children: ReactNode;
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div className="h-screen bg-gray-50 max-h-screen overflow-hidden">
-      <Sidebar />
+      <AdminSidebar />
 
       <main className="mr-72 p-8 transition-all duration-300 h-full overflow-y-auto">
         {children}

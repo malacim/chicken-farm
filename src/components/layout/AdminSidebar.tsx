@@ -2,10 +2,20 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, Home, Settings, User, BarChart2, ShoppingCart } from 'lucide-react';
+import { 
+  LogOut, 
+  Home, 
+  Settings, 
+  User, 
+  Users, 
+  BarChart2, 
+  ShieldAlert, 
+  ShoppingBag, 
+  Bell, 
+  Brain 
+} from 'lucide-react';
 import useAuthStore from '@/store/useAuthStore';
 import Image from 'next/image';
-import { setCookie } from '@/utils/cookies';
 
 interface NavItem {
   href: string;
@@ -13,46 +23,30 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-export default function Sidebar() {
+export default function AdminSidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuthStore();
 
   const handleLogout = () => {
-    logout();
-    router.push('/');
+    logout(() => {
+      router.push('/');
+    });
   };
 
-  const getNavItems = () => {
-
-    const roleSpecificItems: Record<string, NavItem[]> = {
-      investor: [
-        { href: '/dashboard', label: 'الرئيسية', icon: Home },
-        { href: '/dashboard/profile', label: 'الملف الشخصي', icon: User },
-        { href: '/dashboard/investors', label: 'استثماراتي', icon: BarChart2 },
-        { href: '/dashboard/market', label: 'السوق', icon: ShoppingCart },
-        { href: '/dashboard/settings', label: 'الإعدادات', icon: Settings },
-      ],
-      farmer: [
-        { href: '/dashboard', label: 'الرئيسية', icon: Home },
-        { href: '/dashboard/profile', label: 'الملف الشخصي', icon: User },
-        { href: '/dashboard/farms', label: 'المزارع', icon: BarChart2 },
-        { href: '/dashboard/market', label: 'السوق', icon: ShoppingCart },
-        { href: '/dashboard/settings', label: 'الإعدادات', icon: Settings },
-      ],
-      market_buyer: [
-        { href: '/dashboard/market', label: 'السوق', icon: ShoppingCart },
-        { href: '/dashboard/settings', label: 'الإعدادات', icon: Settings },
-      ],
-    };
-
-    return [...roleSpecificItems[user?.role as keyof typeof roleSpecificItems] || []];
-  };
-
-  const navItems = getNavItems();
+  const adminNavItems: NavItem[] = [
+    { href: '/admin', label: 'نظرة عامة', icon: Home },
+    { href: '/admin/users', label: 'المستخدمون', icon: Users },
+    { href: '/admin/investments', label: 'الاستثمارات', icon: BarChart2 },
+    { href: '/admin/insurance', label: 'صندوق التأمين', icon: ShieldAlert },
+    { href: '/admin/market', label: 'السوق', icon: ShoppingBag },
+    { href: '/admin/notifications', label: 'التنبيهات', icon: Bell },
+    { href: '/admin/ai-monitor', label: 'الذكاء الاصطناعي', icon: Brain },
+    { href: '/admin/settings', label: 'إعدادات النظام', icon: Settings },
+  ];
 
   const handleLogoClick = () => {
-    router.push('/');
+    router.push('/admin');
   };
 
   return (
@@ -61,8 +55,8 @@ export default function Sidebar() {
         {/* Logo Section */}
         <div className="p-6 border-b border-gray-100 flex items-center cursor-pointer" onClick={handleLogoClick}>
           <Image src="/images/logo-d.png" alt="Logo" width={50} height={50} />
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] bg-clip-text text-transparent">
-            HalaChick
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-[var(--color-chickadmin-primary)] to-[var(--color-chickadmin-secondary)] bg-clip-text text-transparent">
+            ChickAdmin
           </h1>
         </div>
 
@@ -70,10 +64,10 @@ export default function Sidebar() {
         <nav className="flex-1 px-4 py-6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200">
           <div className="mb-6">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 mb-2">
-              القائمة الرئيسية
+              لوحة التحكم
             </p>
             <ul className="space-y-1.5">
-              {navItems.map((item) => {
+              {adminNavItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
 
@@ -83,11 +77,11 @@ export default function Sidebar() {
                       href={item.href}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
                         isActive
-                          ? 'bg-[var(--color-primary)] text-white shadow-md shadow-[var(--color-primary)]/20'
+                          ? 'bg-[var(--color-chickadmin-primary)] text-white shadow-md shadow-[var(--color-chickadmin-primary)]/20'
                           : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
-                      <Icon className={`h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-[var(--color-primary)]'}`} />
+                      <Icon className={`h-5 w-5 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-[var(--color-chickadmin-primary)]'}`} />
                       <span className="font-medium">{item.label}</span>
 
                       {isActive && (
@@ -104,8 +98,8 @@ export default function Sidebar() {
         {/* User Profile Section */}
         <div className="p-4 border-t border-gray-100 bg-gray-50">
           <div className="flex items-center p-2 rounded-xl bg-white shadow-sm">
-            <div className="flex-shrink-0 w-10 h-10 bg-[var(--color-primary)]/10 rounded-full flex items-center justify-center">
-              <User className="h-5 w-5 text-[var(--color-primary)]" />
+            <div className="flex-shrink-0 w-10 h-10 bg-[var(--color-chickadmin-primary)]/10 rounded-full flex items-center justify-center">
+              <User className="h-5 w-5 text-[var(--color-chickadmin-primary)]" />
             </div>
 
             <div className="flex-1 min-w-0 mr-3">

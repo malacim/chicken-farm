@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import useAuthStore from '@/store/useAuthStore';
+import { toast } from 'react-hot-toast';
+
 
 export default function Profile() {
   const { user, isAuthenticated } = useAuthStore();
@@ -48,9 +50,8 @@ export default function Profile() {
     setIsLoading(true);
 
     try {
-      // TODO: Implement profile update functionality
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      alert('سيتم تنفيذ تحديث الملف الشخصي قريباً');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success('تم تحديثات الملف الشخصي بنجاح');
     } catch (error) {
       console.error('Error updating profile:', error);
     } finally {

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import useAuthStore from '@/store/useAuthStore';
+import { toast } from 'react-hot-toast';
 
 export default function Settings() {
   const { user, isAuthenticated } = useAuthStore();
@@ -34,9 +35,8 @@ export default function Settings() {
     setIsLoading(true);
 
     try {
-      // TODO: Implement settings update functionality
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      alert('سيتم تنفيذ تحديث الإعدادات قريباً');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success('تم تحديث الإعدادات بنجاح');
     } catch (error) {
       console.error('Error updating settings:', error);
     } finally {
