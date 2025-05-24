@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
-import { TokenBlacklist } from '@/models';
 
 export async function POST() {
   try {

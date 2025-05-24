@@ -6,10 +6,8 @@ import {
   Users,
   BarChart2,
   ShieldAlert,
-  ShoppingBag,
   Bell,
   Brain,
-  Settings,
   TrendingUp,
   AlertTriangle
 } from 'lucide-react';
@@ -79,7 +77,7 @@ const investmentDistributionData = {
 export default function AdminDashboard() {
   const { isAuthenticated, initialized, initialize, user, logout } = useAuthStore();
   const router = useRouter();
-  const [stats, setStats] = useState({
+  const [stats, _] = useState({
     totalInvestors: 120,
     activeInvestors: 98,
     activeFarmers: 45,
@@ -116,8 +114,8 @@ export default function AdminDashboard() {
   // Dashboard stat card component
   const StatCard = ({ title, value, Icon, color }: {
     title: string;
-    value: any;
-    Icon: any;
+    value: string | number;
+    Icon: React.ElementType;
     color: string;
   }) => (
     <div className="bg-white p-6 rounded-lg shadow-md border-r-4" style={{ borderColor: color }}>

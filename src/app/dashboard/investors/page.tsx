@@ -18,6 +18,29 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 //   { id: 4, name: 'Desert Oasis', location: 'Agadir' }
 // ];
 
+interface Investment {
+  id: string | number;
+  farm?: {
+    name: string;
+  } | string;
+  farmId?: string | number;
+  amount: number;
+  type: 'BaidCash' | 'KtiCash';
+  status: 'Active' | 'Pending' | 'Completed';
+}
+
+interface Farm {
+  id: string | number;
+  name: string;
+  location: string;
+}
+
+interface InvestmentForm {
+  farmId: string;
+  amount: string;
+  type: 'BaidCash' | 'KtiCash';
+}
+
 async function fetchInvestments() {
   const res = await fetch('/api/investments');
   if (!res.ok) throw new Error('Failed to fetch investments');
@@ -30,15 +53,15 @@ async function fetchFarms() {
   return await res.json();
 }
 
-async function createInvestment(data: any) {
+async function createInvestment(data: { farmId: number; amount: number; type: 'BaidCash' | 'KtiCash' }) {
   await new Promise(resolve => setTimeout(resolve, 1500));
   return { success: true };
 }
 
 const InvestorsPage = () => {
-  const [investments, setInvestments] = useState([]);
-  const [farms, setFarms] = useState([]);
-  const [form, setForm] = useState({ farmId: '', amount: '', type: 'BaidCash' });
+  const [investments, setInvestments] = useState<Investment[]>([]);
+  const [farms, setFarms] = useState<Farm[]>([]);
+  const [form, setForm] = useState<InvestmentForm>({ farmId: '', amount: '', type: 'BaidCash' });
   const [loadingInvestments, setLoadingInvestments] = useState(true);
   const [loadingFarms, setLoadingFarms] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -48,10 +71,10 @@ const InvestorsPage = () => {
     setLoadingInvestments(true);
     setLoadingFarms(true);
     fetchInvestments()
-      .then(setInvestments as any)
+      .then(setInvestments)
       .finally(() => setLoadingInvestments(false));
     fetchFarms()
-      .then(setFarms as any)
+      .then(setFarms)
       .finally(() => setLoadingFarms(false));
   }, []);
 
@@ -70,7 +93,7 @@ const InvestorsPage = () => {
         type: form.type,
       });
       if (res.success) {
-        fetchInvestments().then(setInvestments as any);
+        fetchInvestments().then(setInvestments);
         setForm({ farmId: '', amount: '', type: 'BaidCash' });
       } else {
         setError('Failed to create investment.');
@@ -82,7 +105,7 @@ const InvestorsPage = () => {
     }
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: Investment['status']) => {
     const baseClasses = "px-3 py-1.5 rounded-full text-xs font-medium";
     switch (status) {
       case 'Active':
@@ -96,7 +119,7 @@ const InvestorsPage = () => {
     }
   };
 
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type: Investment['type']) => {
     return type === 'BaidCash' ? '🥚' : '🐣';
   };
 

@@ -26,20 +26,20 @@ ProductSchema.set('toObject', { virtuals: true });
 
 const Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   await connectDB();
-  
+
   try {
     // For demo, we'll populate with mock data if no products exist
     let products = await Product.find({}).populate('farm', 'name location');
-    
+
     if (products.length === 0) {
       // If no products exist, create some mock products
       const Farm = mongoose.models.Farm;
-      
+
       if (Farm) {
         const farms = await Farm.find({});
-        
+
         if (farms.length > 0) {
           const mockProducts = [
             {
@@ -67,12 +67,12 @@ export async function GET(req: NextRequest) {
               image: '🐔'
             }
           ];
-          
+
           await Product.insertMany(mockProducts);
           products = await Product.find({}).populate('farm', 'name location');
         }
       }
-      
+
       // If we still have no products or no farms, return mock data directly
       if (products.length === 0) {
         return NextResponse.json([
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
         ]);
       }
     }
-    
+
     return NextResponse.json(products);
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -119,7 +119,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   await connectDB();
-  
+
   try {
     const data = await req.json();
     const product = new Product(data);

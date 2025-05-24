@@ -7,39 +7,31 @@ import { motion } from 'framer-motion';
 import useAuthStore from '@/store/useAuthStore';
 import AuthLayout from '@/components/layout/AuthLayout';
 import { FiMail, FiLock } from 'react-icons/fi';
+import api from '@/lib/apiService';
 
 export default function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { setAuth } = useAuthStore();
   const router = useRouter();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
     setLoading(true);
+    setError('');
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await api.post('/auth/login', { email, password });
+      const data = response.data;
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || 'An error occurred');
+      if (data.user) {
+        setAuth(data.user);
+        router.push('/dashboard');
       }
-
-      setAuth(data.user, data.token);
-      router.push('/dashboard');
     } catch (err: Error | unknown) {
       const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
       setError(errorMessage);
@@ -90,8 +82,6 @@ export default function Login() {
                   required
                   className="block w-full pr-10 py-3 text-gray-900 rounded-lg border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-opacity-20 transition-all duration-200"
                   placeholder="البريد الإلكتروني"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
               </div>
 
@@ -106,8 +96,6 @@ export default function Login() {
                   required
                   className="block w-full pr-10 py-3 text-gray-900 rounded-lg border border-gray-200 placeholder-gray-400 focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)] focus:ring-opacity-20 transition-all duration-200"
                   placeholder="كلمة المرور"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
               </div>
             </div>

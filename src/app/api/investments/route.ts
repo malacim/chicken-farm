@@ -13,7 +13,7 @@ const InvestmentSchema = new mongoose.Schema({
 
 const Investment = mongoose.models.Investment || mongoose.model('Investment', InvestmentSchema);
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   await connectDB();
   // For demo, fetch all investments; in production, filter by user
   const investments = await Investment.find({});

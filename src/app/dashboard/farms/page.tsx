@@ -3,8 +3,31 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+interface Farm {
+  _id?: string;
+  id?: string;
+  name: string;
+  location: string;
+}
+
+interface Investment {
+  _id?: string;
+  id?: string;
+  userId: {
+    name?: string;
+  } | string;
+  amount: number;
+  type: 'BaidCash' | 'KtiCash';
+  status?: string;
+}
+
+interface NewFarm {
+  name: string;
+  location: string;
+}
+
 async function fetchMyFarms() {
-  const res = await fetch("/api/farms?owned=true"); // Adjust this if you have user filtering
+  const res = await fetch("/api/farms?owned=true");
   if (!res.ok) throw new Error("فشل جلب المزارع");
   return await res.json();
 }
@@ -15,7 +38,7 @@ async function fetchFarmInvestors(farmId: string) {
   return await res.json();
 }
 
-async function createFarm(data: any) {
+async function createFarm(data: NewFarm) {
   const res = await fetch("/api/farms", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -25,13 +48,13 @@ async function createFarm(data: any) {
 }
 
 const FarmsPage = () => {
-  const [myFarms, setMyFarms] = useState<any[]>([]);
+  const [myFarms, setMyFarms] = useState<Farm[]>([]);
   const [loadingFarms, setLoadingFarms] = useState(true);
-  const [selectedFarm, setSelectedFarm] = useState<any | null>(null);
-  const [farmInvestors, setFarmInvestors] = useState<any[]>([]);
+  const [selectedFarm, setSelectedFarm] = useState<Farm | null>(null);
+  const [farmInvestors, setFarmInvestors] = useState<Investment[]>([]);
   const [loadingInvestors, setLoadingInvestors] = useState(false);
   const [showAddFarm, setShowAddFarm] = useState(false);
-  const [newFarm, setNewFarm] = useState({ name: "", location: "" });
+  const [newFarm, setNewFarm] = useState<NewFarm>({ name: "", location: "" });
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,10 +65,10 @@ const FarmsPage = () => {
       .finally(() => setLoadingFarms(false));
   }, []);
 
-  const handleSelectFarm = async (farm: any) => {
+  const handleSelectFarm = async (farm: Farm) => {
     setSelectedFarm(farm);
     setLoadingInvestors(true);
-    fetchFarmInvestors(farm._id || farm.id)
+    fetchFarmInvestors(farm._id || farm.id || '')
       .then(setFarmInvestors)
       .finally(() => setLoadingInvestors(false));
   };
@@ -136,7 +159,9 @@ const FarmsPage = () => {
                         {farmInvestors.map((inv) => (
                           <div key={inv._id || inv.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <div>
-                              <h4 className="font-medium text-gray-900">{inv.userId?.name || inv.userId || "مستثمر مجهول"}</h4>
+                              <h4 className="font-medium text-gray-900">
+                                {typeof inv.userId === 'string' ? inv.userId : inv.userId?.name || "مستثمر مجهول"}
+                              </h4>
                               <p className="text-xs text-gray-500 mt-1">{inv.amount} درهم - {inv.type === 'BaidCash' ? 'بيض كاش' : 'كتي كاش'}</p>
                             </div>
                             <span className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-md font-medium">{inv.status || "نشط"}</span>

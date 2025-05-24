@@ -3,6 +3,34 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
+interface Product {
+  _id?: string;
+  id?: string;
+  name: string;
+  price: number;
+  unit: 'dozen' | 'chick' | 'hen';
+  available: number;
+  image?: string;
+  farm?: {
+    _id?: string;
+    id?: string;
+    name: string;
+  } | string;
+}
+
+interface Farm {
+  _id?: string;
+  id?: string;
+  name: string;
+  location: string;
+}
+
+interface OrderForm {
+  productId: string;
+  quantity: string;
+  farmId: string;
+}
+
 async function fetchProducts() {
   try {
     const res = await fetch('/api/products');
@@ -31,7 +59,7 @@ async function fetchFarms() {
   }
 }
 
-async function createOrder(data: any) {
+async function createOrder(data: { productId: string; quantity: number; farmId: string }) {
   try {
     await new Promise(resolve => setTimeout(resolve, 1500));
     return { success: true };
@@ -42,10 +70,10 @@ async function createOrder(data: any) {
 }
 
 const MarketPage = () => {
-  const [products, setProducts] = useState<any[]>([]);
-  const [farms, setFarms] = useState<any[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [form, setForm] = useState({ productId: '', quantity: '1', farmId: '' });
+  const [products, setProducts] = useState<Product[]>([]);
+  const [farms, setFarms] = useState<Farm[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [form, setForm] = useState<OrderForm>({ productId: '', quantity: '1', farmId: '' });
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingFarms, setLoadingFarms] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -67,9 +95,9 @@ const MarketPage = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleProductSelect = (product: any) => {
+  const handleProductSelect = (product: Product) => {
     setSelectedProduct(product);
-    setForm({ ...form, productId: (product._id || product.id).toString() });
+    setForm({ ...form, productId: (product._id || product.id || '').toString() });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,10 +105,14 @@ const MarketPage = () => {
     setLoading(true);
     setError('');
     try {
+      const farmId = typeof selectedProduct?.farm === 'string'
+        ? selectedProduct.farm
+        : selectedProduct?.farm?._id || selectedProduct?.farm?.id || form.farmId;
+
       const res = await createOrder({
         productId: form.productId,
         quantity: Number(form.quantity),
-        farmId: selectedProduct?.farm?._id || selectedProduct?.farm?.id || form.farmId,
+        farmId,
       });
       if (res.success) {
         fetchProducts().then(setProducts);
@@ -105,7 +137,7 @@ const MarketPage = () => {
         return true;
       });
 
-  const getProductIcon = (product: any) => {
+  const getProductIcon = (product: Product) => {
     if (product.name.includes('بيض')) return '🥚';
     if (product.name.includes('كتاكيت')) return '🐣';
     if (product.name.includes('دجاج')) return '🐔';
@@ -168,7 +200,7 @@ const MarketPage = () => {
                     </div>
                   ) : filteredProducts.length > 0 ? (
                     <div className="space-y-4">
-                      {filteredProducts.map((product: any) => (
+                      {filteredProducts.map((product: Product) => (
                         <div
                           key={product._id || product.id}
                           className={`flex items-center justify-between p-5 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md cursor-pointer ${selectedProduct && (selectedProduct._id === product._id || selectedProduct.id === product.id) ? 'ring-2 ring-green-500 bg-green-50' : ''}`}
@@ -181,7 +213,9 @@ const MarketPage = () => {
                             <div>
                               <h3 className="font-medium text-gray-900 text-lg">{product.name}</h3>
                               <p className="text-sm text-gray-500 mt-1">
-                                {product.farm?.name || product.farm || 'مزرعة غير محددة'}
+                                {typeof product.farm === 'string'
+                                  ? product.farm
+                                  : product.farm?.name || 'مزرعة غير محددة'}
                               </p>
                             </div>
                           </div>
@@ -233,7 +267,7 @@ const MarketPage = () => {
                     </div>
                   ) : farms.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {farms.map((farm: any) => (
+                      {farms.map((farm: Farm) => (
                         <div
                           key={farm._id || farm.id}
                           className="p-5 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md group cursor-pointer"
@@ -291,7 +325,7 @@ const MarketPage = () => {
                           </div>
                           <div>
                             <h3 className="font-medium text-gray-900">{selectedProduct.name}</h3>
-                            <p className="text-sm text-gray-500">{selectedProduct.farm?.name || selectedProduct.farm || 'مزرعة غير محددة'}</p>
+                            <p className="text-sm text-gray-500">{typeof selectedProduct.farm === 'string' ? selectedProduct.farm : selectedProduct.farm?.name || 'مزرعة غير محددة'}</p>
                           </div>
                         </div>
                       </div>

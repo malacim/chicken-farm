@@ -1,5 +1,9 @@
 import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 
+interface RetryConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
+
 const api = axios.create({
   baseURL: '/api',
   headers: {
@@ -26,12 +30,13 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (error.response?.status === 401 && !(error.config as any)._retry) {
-      (error.config as any)._retry = true;
+    const config = error.config as RetryConfig;
+    if (error.response?.status === 401 && !config._retry) {
+      config._retry = true;
 
       try {
         await api.post('/auth/refresh');
-        return api(error.config);
+        return api(config);
       } catch (refreshError) {
         window.location.href = '/auth/login';
         return Promise.reject(refreshError);

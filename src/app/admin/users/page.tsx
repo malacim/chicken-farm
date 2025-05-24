@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   User,
@@ -39,13 +39,26 @@ export default function UsersManagement() {
   const router = useRouter();
 
   const [users, setUsers] = useState<UserType[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [showUserModal, setShowUserModal] = useState(false);
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      const params = new URLSearchParams();
+      if (roleFilter !== 'all') params.append('role', roleFilter);
+      if (statusFilter !== 'all') params.append('status', statusFilter);
+      if (searchTerm) params.append('search', searchTerm);
+
+      const response = await api.get(`/admin/users?${params.toString()}`);
+      setUsers(response.data.users);
+    } catch (err) {
+      toast.error('فشل في جلب بيانات المستخدمين');
+      console.error('Error fetching users:', err);
+    }
+  }, [roleFilter, statusFilter, searchTerm]);
 
   // Initialize auth state
   useEffect(() => {
@@ -64,36 +77,14 @@ export default function UsersManagement() {
         fetchUsers();
       }
     }
-  }, [initialized, isAuthenticated, router, user]);
+  }, [initialized, isAuthenticated, router, user, fetchUsers]);
 
   // Fetch users when filters change
   useEffect(() => {
     if (isAuthenticated && user?.role === 'admin') {
       fetchUsers();
     }
-  }, [roleFilter, statusFilter, searchTerm]);
-
-  const fetchUsers = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const params = new URLSearchParams();
-      if (roleFilter !== 'all') params.append('role', roleFilter);
-      if (statusFilter !== 'all') params.append('status', statusFilter);
-      if (searchTerm) params.append('search', searchTerm);
-
-      const response = await api.get(`/admin/users?${params.toString()}`);
-      setUsers(response.data.users);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch users';
-      setError(errorMessage);
-      toast.error('فشل في جلب بيانات المستخدمين');
-      console.error('Error fetching users:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [isAuthenticated, user?.role, fetchUsers]);
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||

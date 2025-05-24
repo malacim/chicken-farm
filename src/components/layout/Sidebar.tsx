@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { LogOut, Home, Settings, User, BarChart2, ShoppingCart } from 'lucide-react';
 import useAuthStore from '@/store/useAuthStore';
 import Image from 'next/image';
-import { setCookie } from '@/utils/cookies';
 
 interface NavItem {
   href: string;

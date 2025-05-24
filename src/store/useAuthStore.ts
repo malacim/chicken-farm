@@ -21,7 +21,7 @@ interface AuthState {
   isAuthenticated: boolean;
   initialized: boolean;
   initialize: () => Promise<void>;
-  setAuth: (user: User) => void;
+  setAuth: (user: User, token?: string) => void;
   logout: (callback?: () => void) => Promise<void>;
 }
 
@@ -49,7 +49,7 @@ const useAuthStore = create<AuthState>()((set, get) => ({
     }
   },
 
-  setAuth: (user) => {
+  setAuth: (user, token) => {
     set({
       user,
       isAuthenticated: true,
@@ -60,8 +60,8 @@ const useAuthStore = create<AuthState>()((set, get) => ({
   logout: async (callback) => {
     try {
       await api.post('/auth/logout');
-    } catch (error) {
-      console.error('Error logging out:', error);
+    } catch {
+      console.error('Error logging out');
     }
 
     set({
