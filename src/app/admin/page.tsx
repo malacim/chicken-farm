@@ -15,7 +15,6 @@ import useAuthStore from '@/store/useAuthStore';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { toast } from 'react-hot-toast';
 
-// Chart component imports
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -28,7 +27,6 @@ import {
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
 
-// Register ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -39,53 +37,55 @@ ChartJS.register(
   ArcElement
 );
 
-// Mock data for charts
-const monthlyPerformanceData = {
-  labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
-  datasets: [
-    {
-      label: 'الاستثمارات',
-      data: [12, 19, 13, 15, 22, 27],
-      backgroundColor: 'rgba(46, 125, 50, 0.6)',
-    },
-    {
-      label: 'الأرباح',
-      data: [7, 11, 5, 8, 13, 17],
-      backgroundColor: 'rgba(212, 175, 55, 0.6)',
-    },
-  ],
-};
+// --- Analytics state ---
 
-const investmentDistributionData = {
-  labels: ['BaidCash', 'KtiCash'],
-  datasets: [
-    {
-      data: [65, 35],
-      backgroundColor: [
-        'rgba(46, 125, 50, 0.6)',
-        'rgba(212, 175, 55, 0.6)',
-      ],
-      borderColor: [
-        'rgba(46, 125, 50, 1)',
-        'rgba(212, 175, 55, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+
+
+
 
 export default function AdminDashboard() {
   const { isAuthenticated, initialized, initialize, user, logout } = useAuthStore();
   const router = useRouter();
-  const [stats, _] = useState({
-    totalInvestors: 120,
-    activeInvestors: 98,
-    activeFarmers: 45,
-    activeInvestments: 87,
-    completedInvestments: 34,
-    insuranceFund: 250000,
-    emergencyAlerts: 3
-  });
+  const [stats, setStats] = useState<null | {
+    totalInvestors: number;
+    activeInvestors: number;
+    activeFarmers: number;
+    activeInvestments: number;
+    completedInvestments: number;
+    insuranceFund: number;
+    emergencyAlerts: number;
+  }>(null);
+  const [analytics, setAnalytics] = useState<null | {
+    monthly: { labels: string[]; investments: number[]; profits: number[] };
+    distribution: { BaidCash: number; KtiCash: number };
+    alerts: { type: string; userName: string; userRole: string; date: string; status: string }[];
+  }>(null);
+
+  useEffect(() => {
+    // fetch aggregated stats & analytics from api
+    const fetchStats = async () => {
+      // stats
+
+      try {
+        const res = await fetch('/api/admin/stats');
+        if (!res.ok) throw new Error('فشل جلب الإحصائيات');
+        const data = await res.json();
+        setStats(data);
+          // fetch analytics in parallel
+          try {
+            const resAn = await fetch('/api/admin/analytics');
+            if (resAn.ok) {
+              const an = await resAn.json();
+              setAnalytics(an);
+            }
+          } catch (e) { console.error(e); }
+      } catch (err) {
+        console.error(err);
+        toast.error('حدث خطأ أثناء جلب الإحصائيات');
+      }
+    };
+    if (isAuthenticated && user?.role === 'admin') fetchStats();
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     initialize();
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
             <div className="relative">
               <Bell className="h-6 w-6 text-gray-600 cursor-pointer hover:text-[var(--color-chickadmin-primary)]" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                {stats.emergencyAlerts}
+                {stats?.emergencyAlerts ?? 0}
               </span>
             </div>
             <button
@@ -152,59 +152,71 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             title="إجمالي المستثمرين"
-            value={stats.totalInvestors}
+            value={stats?.totalInvestors ?? 0}
             Icon={Users}
             color="var(--color-chickadmin-primary)"
           />
           <StatCard
             title="المستثمرين النشطين"
-            value={stats.activeInvestors}
+            value={stats?.activeInvestors ?? 0}
             Icon={Users}
             color="var(--color-chickadmin-accent)"
           />
           <StatCard
             title="المربين النشطين"
-            value={stats.activeFarmers}
+            value={stats?.activeFarmers ?? 0}
             Icon={Users}
             color="var(--color-chickadmin-secondary)"
           />
           <StatCard
             title="الاستثمارات الجارية"
-            value={stats.activeInvestments}
+            value={stats?.activeInvestments ?? 0}
             Icon={TrendingUp}
             color="var(--color-chickadmin-primary)"
           />
           <StatCard
             title="الاستثمارات المنتهية"
-            value={stats.completedInvestments}
+            value={stats?.completedInvestments ?? 0}
             Icon={BarChart2}
             color="var(--color-chickadmin-secondary)"
           />
           <StatCard
             title="رصيد صندوق التأمين"
-            value={`${stats.insuranceFund} درهم`}
+            value={`${stats?.insuranceFund ?? 0} درهم`}
             Icon={ShieldAlert}
             color="var(--color-chickadmin-accent)"
           />
           <StatCard
             title="حالات الطوارئ"
-            value={stats.emergencyAlerts}
+            value={stats?.emergencyAlerts ?? 0}
             Icon={AlertTriangle}
             color="#f44336"
           />
         </div>
 
-        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">الأداء الشهري</h2>
             <div className="h-80">
               <Bar
-                data={monthlyPerformanceData}
+                data={{
+                  labels: analytics?.monthly.labels || [],
+                  datasets: [
+                    {
+                      label: 'الاستثمارات',
+                      data: analytics?.monthly.investments || [],
+                      backgroundColor: 'rgba(46, 125, 50, 0.6)',
+                    },
+                    {
+                      label: 'الأرباح',
+                      data: analytics?.monthly.profits || [],
+                      backgroundColor: 'rgba(212, 175, 55, 0.6)',
+                    },
+                  ],
+                }}
                 options={{
                   responsive: true,
                   maintainAspectRatio: false,
@@ -222,7 +234,23 @@ export default function AdminDashboard() {
             <h2 className="text-xl font-semibold mb-4">توزيع الاستثمارات</h2>
             <div className="h-80 flex items-center justify-center">
               <Pie
-                data={investmentDistributionData}
+                data={{
+                  labels: ['BaidCash', 'KtiCash'],
+                  datasets: [
+                    {
+                      data: analytics ? [analytics.distribution.BaidCash, analytics.distribution.KtiCash] : [],
+                      backgroundColor: [
+                        'rgba(46, 125, 50, 0.6)',
+                        'rgba(212, 175, 55, 0.6)',
+                      ],
+                      borderColor: [
+                        'rgba(46, 125, 50, 1)',
+                        'rgba(212, 175, 55, 1)',
+                      ],
+                      borderWidth: 1,
+                    },
+                  ],
+                }}
                 options={{
                   responsive: true,
                   maintainAspectRatio: false,
@@ -237,7 +265,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Recent Alerts */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">آخر التنبيهات</h2>
@@ -255,45 +282,27 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">طوارئ</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">أحمد محمد (مربي)</td>
-                  <td className="px-6 py-4 whitespace-nowrap">24 مايو 2025</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">قيد المراجعة</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-chickadmin-primary)] hover:underline cursor-pointer">مراجعة</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">تأخير دفع</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">سارة أحمد (مستثمر)</td>
-                  <td className="px-6 py-4 whitespace-nowrap">22 مايو 2025</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">تمت المعالجة</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-chickadmin-primary)] hover:underline cursor-pointer">عرض</td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">طلب تفعيل</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">محمد علي (مربي)</td>
-                  <td className="px-6 py-4 whitespace-nowrap">20 مايو 2025</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">تمت المعالجة</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-chickadmin-primary)] hover:underline cursor-pointer">عرض</td>
-                </tr>
+                {analytics?.alerts.map((alert, idx) => (
+                  <tr key={idx}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${alert.type === 'disease' ? 'bg-red-100 text-red-800' : alert.type === 'natural_disaster' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'}`}>{alert.type}</span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">{alert.userName} ({alert.userRole === 'investor' ? 'مستثمر' : 'مربي'})</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{new Date(alert.date).toLocaleDateString('ar-SA')}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${alert.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : alert.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>{alert.status === 'pending' ? 'قيد المراجعة' : alert.status === 'approved' ? 'تمت المعالجة' : 'مرفوض'}</span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-chickadmin-primary)] hover:underline cursor-pointer">عرض</td>
+                  </tr>
+                ))}
+                {!analytics && (
+                  <tr><td colSpan={5} className="px-6 py-4 text-center text-gray-500">جاري التحميل...</td></tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* AI Insights */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex items-center gap-2 mb-4">
             <Brain className="h-6 w-6 text-[var(--color-chickadmin-primary)]" />

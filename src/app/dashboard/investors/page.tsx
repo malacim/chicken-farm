@@ -4,20 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-// Mock data for demonstration
-// const mockInvestments = [
-//   { id: 1, farm: { name: 'Green Valley Farm' }, amount: 5000, type: 'BaidCash', status: 'Active' },
-//   { id: 2, farm: { name: 'Sunny Acres' }, amount: 3200, type: 'KtiCash', status: 'Pending' },
-//   { id: 3, farm: { name: 'Mountain View Farm' }, amount: 7500, type: 'BaidCash', status: 'Active' }
-// ];
-
-// const mockFarms = [
-//   { id: 1, name: 'Green Valley Farm', location: 'Casablanca' },
-//   { id: 2, name: 'Sunny Acres', location: 'Rabat' },
-//   { id: 3, name: 'Mountain View Farm', location: 'Marrakech' },
-//   { id: 4, name: 'Desert Oasis', location: 'Agadir' }
-// ];
-
 interface Investment {
   id: string | number;
   farm?: {
@@ -215,7 +201,7 @@ const InvestorsPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {farms.map((farm: any) => (
                       <div
-                        key={farm.id}
+                        key={farm._id}
                         className="p-5 bg-gray-50 rounded-xl border border-gray-100 hover:bg-white transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md group cursor-pointer"
                       >
                         <h3 className="font-medium text-gray-900 text-lg mb-2 group-hover:text-green-600 transition-colors">{farm.name}</h3>
@@ -225,7 +211,7 @@ const InvestorsPage = () => {
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            {farm.location}
+                            {farm.location.city}
                           </p>
                           <span className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-md font-medium">Available</span>
                         </div>
@@ -266,8 +252,8 @@ const InvestorsPage = () => {
                     >
                       <option value="">اختر مزرعة...</option>
                       {farms.map((farm: any) => (
-                        <option key={farm.id} value={farm.id}>
-                          {farm.name} - {farm.location}
+                        <option key={farm._id} value={farm._id}>
+                          {farm.name} - {farm.location.city}
                         </option>
                       ))}
                     </select>

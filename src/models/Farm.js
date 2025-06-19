@@ -1,10 +1,21 @@
 import mongoose from 'mongoose';
 
 const farmSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    trim: true,
+    required: [true, 'اسم المزرعة مطلوب'],
+    minlength: [1, 'اسم المزرعة لا يمكن أن يكون فارغًا'],
+  },
+  description: {
+    type: String,
+    trim: true,
+    required: [true, 'الوصف مطلوب'],
+    minlength: [1, 'الوصف لا يمكن أن يكون فارغًا'],
+  },
   farmer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
   },
   location: {
     city: String,
@@ -29,8 +40,8 @@ const farmSchema = new mongoose.Schema({
     azollaPlantAvailable: Boolean,
   },
   documents: {
-    personalPhotos: [String], // URLs to photos
-    idCardImage: String, // URL to ID card image
+    personalPhotos: [String],
+    idCardImage: String,
   },
   verificationStatus: {
     type: String,

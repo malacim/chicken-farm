@@ -7,7 +7,12 @@ interface Farm {
   _id?: string;
   id?: string;
   name: string;
-  location: string;
+  description?: string;
+  location: string | {
+    city?: string;
+    province?: string;
+    village?: string;
+  };
 }
 
 interface Investment {
@@ -23,11 +28,12 @@ interface Investment {
 
 interface NewFarm {
   name: string;
+  description: string;
   location: string;
 }
 
 async function fetchMyFarms() {
-  const res = await fetch("/api/farms?owned=true");
+  const res = await fetch("/api/farms");
   if (!res.ok) throw new Error("فشل جلب المزارع");
   return await res.json();
 }
@@ -54,7 +60,7 @@ const FarmsPage = () => {
   const [farmInvestors, setFarmInvestors] = useState<Investment[]>([]);
   const [loadingInvestors, setLoadingInvestors] = useState(false);
   const [showAddFarm, setShowAddFarm] = useState(false);
-  const [newFarm, setNewFarm] = useState<NewFarm>({ name: "", location: "" });
+  const [newFarm, setNewFarm] = useState<NewFarm>({ name: "", description: "", location: "" });
   const [loadingAdd, setLoadingAdd] = useState(false);
   const [error, setError] = useState("");
 
@@ -82,7 +88,7 @@ const FarmsPage = () => {
       if (res && res._id) {
         setMyFarms((prev) => [...prev, res]);
         setShowAddFarm(false);
-        setNewFarm({ name: "", location: "" });
+        setNewFarm({ name: "", description: "", location: "" });
       } else {
         setError("فشل إضافة المزرعة");
       }
@@ -92,6 +98,8 @@ const FarmsPage = () => {
       setLoadingAdd(false);
     }
   };
+
+  console.log(myFarms);
 
   return (
     <DashboardLayout>
@@ -127,7 +135,8 @@ const FarmsPage = () => {
                         >
                           <div>
                             <h3 className="font-medium text-gray-900 text-lg">{farm.name}</h3>
-                            <p className="text-sm text-gray-500 mt-1">{farm.location}</p>
+                            <p className="text-sm text-gray-500 mt-1">{typeof farm.location === 'string' ? farm.location : (farm.location?.city || farm.location?.village || farm.location?.province || '')}</p>
+                            {farm.description && <p className="text-sm text-gray-500 mt-1">{farm.description}</p>}
                           </div>
                           <span className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded-md font-medium">{selectedFarm && (selectedFarm._id || selectedFarm.id) === (farm._id || farm.id) ? "المختارة" : ""}</span>
                         </div>
@@ -193,6 +202,17 @@ const FarmsPage = () => {
                         onChange={e => setNewFarm({ ...newFarm, name: e.target.value })}
                         required
                         placeholder="أدخل اسم المزرعة"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">الوصف</label>
+                      <input
+                        type="text"
+                        className="block w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                        value={newFarm.description}
+                        onChange={e => setNewFarm({ ...newFarm, description: e.target.value })}
+                        required
+                        placeholder="وصف مختصر"
                       />
                     </div>
                     <div>

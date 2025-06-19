@@ -2,17 +2,17 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  LogOut, 
-  Home, 
-  Settings, 
-  User, 
-  Users, 
-  BarChart2, 
-  ShieldAlert, 
-  ShoppingBag, 
-  Bell, 
-  Brain 
+import {
+  LogOut,
+  Home,
+  Settings,
+  User,
+  Users,
+  BarChart2,
+  ShieldAlert,
+  ShoppingBag,
+  Bell,
+  Brain
 } from 'lucide-react';
 import useAuthStore from '@/store/useAuthStore';
 import Image from 'next/image';
@@ -40,8 +40,6 @@ export default function AdminSidebar() {
     { href: '/admin/investments', label: 'الاستثمارات', icon: BarChart2 },
     { href: '/admin/insurance', label: 'صندوق التأمين', icon: ShieldAlert },
     { href: '/admin/market', label: 'السوق', icon: ShoppingBag },
-    { href: '/admin/notifications', label: 'التنبيهات', icon: Bell },
-    { href: '/admin/ai-monitor', label: 'الذكاء الاصطناعي', icon: Brain },
     { href: '/admin/settings', label: 'إعدادات النظام', icon: Settings },
   ];
 
