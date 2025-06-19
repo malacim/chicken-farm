@@ -742,9 +742,8 @@ export default function Home() {
               <ul className="space-y-2 opacity-80">
                 <li><Link href="/" className="hover:underline">الرئيسية</Link></li>
                 <li><Link href="/about" className="hover:underline">عن المنصة</Link></li>
-                <li><Link href="/packages" className="hover:underline">حزم الاستثمار</Link></li>
+                <li><Link href="/invest" className="hover:underline">حزم الاستثمار</Link></li>
                 <li><Link href="/insurance" className="hover:underline">صندوق التأمين</Link></li>
-                <li><Link href="/marketplace" className="hover:underline">السوق</Link></li>
               </ul>
             </div>
 
