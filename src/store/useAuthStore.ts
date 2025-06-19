@@ -39,11 +39,20 @@ const useAuthStore = create<AuthState>()((set, get) => ({
 
     try {
       const response = await api.get('/auth/me');
-      set({
-        user: response.data,
-        isAuthenticated: true,
-        initialized: true
-      });
+
+      if (response.data.message === "not logged in") {
+        set({
+          user: null,
+          isAuthenticated: false,
+          initialized: true
+        });
+      } else {
+        set({
+          user: response.data,
+          isAuthenticated: true,
+          initialized: true
+        });
+      }
     } catch (error) {
       set({ initialized: true });
     }

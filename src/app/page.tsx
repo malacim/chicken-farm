@@ -15,9 +15,11 @@ import { useState } from 'react';
 import Chicken from '@/icons/Chicken';
 import Chick from '@/icons/Chick';
 import useAuthStore from '@/store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const { user } = useAuthStore();
+  const router = useRouter();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -26,6 +28,14 @@ export default function Home() {
     }
   };
   const [activeTab, setActiveTab] = useState('baidcash');
+
+  const handleInvestClick = () => {
+    if (user) {
+      router.push('/dashboard/investors');
+    } else {
+      router.push('/auth/register');
+    }
+  }
 
   const features = [
     {
@@ -141,7 +151,7 @@ export default function Home() {
               HalaChick
             </Link>
           </div>
-          <div className="hidden md:flex items-center space-x-6 rtl:space-x-reverse">
+          <div className="hidden md:flex items-center gap-4 rtl:space-x-reverse">
             <button onClick={() => scrollToSection('features')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">خدماتنا</button>
             <button onClick={() => scrollToSection('investment')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">الاستثمار</button>
             <button onClick={() => scrollToSection('why-us')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] cursor-pointer transition-all duration-300">لماذا نحن</button>
@@ -190,9 +200,9 @@ export default function Home() {
               منصة هلا تشيك توفر لك فرص استثمارية مبتكرة في قطاع الدواجن بعوائد مجزية تصل إلى 30% وبنظام شفاف وآمن
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 rtl:space-x-reverse">
-              <Link href="/signup" className="ml-4 btn bg-white text-[var(--color-primary-dark)] text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
+              <button onClick={handleInvestClick} className="ml-4 btn bg-white text-[var(--color-primary-dark)] text-lg px-8 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
                 ابدأ الاستثمار الآن
-              </Link>
+              </button>
               <button onClick={() => scrollToSection('features')} className="btn bg-transparent text-white border-2 border-white text-lg px-8 py-4 rounded-lg hover:bg-white/10 transition-all font-semibold flex items-center justify-center">
                 اكتشف المزيد
                 <ChevronDown className="mr-2 w-5 h-5" />
@@ -262,7 +272,7 @@ export default function Home() {
                   ))}
                 </ul>
                 <div className="mt-8">
-                  <Link href={`/${feature.title.split(' ')[0].toLowerCase()}`} className="text-[var(--color-primary-dark)] font-semibold inline-flex items-center hover:underline">
+                  <Link href="/invest" className="text-[var(--color-primary-dark)] font-semibold inline-flex items-center hover:underline">
                     عرض التفاصيل
                     <ChevronDown className="transform rotate-90 mr-1 w-5 h-5" />
                   </Link>
@@ -382,9 +392,9 @@ export default function Home() {
                     <span>{investmentPackages.baidcash.insuranceFee}</span>
                   </div>
                 </div>
-                <Link href="/signup" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
+                <button onClick={handleInvestClick} className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
                   استثمر الآن
-                </Link>
+                </button>
               </div>
             </div>
           )}
@@ -436,9 +446,9 @@ export default function Home() {
                     <span>{investmentPackages.kticash.insuranceFee}</span>
                   </div>
                 </div>
-                <Link href="/signup" className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
+                <button onClick={handleInvestClick} className="btn bg-[var(--color-primary-dark)] text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all inline-block">
                   استثمر الآن
-                </Link>
+                </button>
               </div>
             </div>
           )}
@@ -682,7 +692,7 @@ export default function Home() {
             سجل الآن واستفد من فرص استثمارية مميزة في عالم الدواجن مع عوائد مضمونة وشفافية كاملة
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/signup" className="btn bg-[var(--color-primary-dark)] text-white text-lg px-10 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
+            <Link href="/auth/register" className="btn bg-[var(--color-primary-dark)] text-white text-lg px-10 py-4 rounded-lg shadow-lg hover:bg-opacity-90 transition-all font-semibold">
               إنشاء حساب
             </Link>
             <Link href="/contact" className="btn bg-transparent border-2 border-[var(--color-primary-dark)] text-[var(--color-primary-dark)] text-lg px-10 py-4 rounded-lg hover:bg-[var(--color-primary-dark)]/10 transition-all font-semibold">

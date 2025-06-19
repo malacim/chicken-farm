@@ -20,6 +20,57 @@ const tajawal = Tajawal({
 export const metadata: Metadata = {
   title: "HlaChick - منصة استثمار بمشاريع الدواجن",
   description: "منصة رقمية للاستثمار في تربية الدواجن ومتابعة الأرباح بشكل شفاف وآمن",
+  keywords: ["استثمار", "دواجن", "تربية الدواجن", "مشاريع استثمارية", "أرباح", "HlaChick"],
+  authors: [{ name: "HlaChick" }],
+  creator: "HlaChick",
+  publisher: "HlaChick",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png" },
+    ],
+    other: [
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "96x96",
+        url: "/favicon-96x96.png",
+      },
+    ],
+  },
+  manifest: "/site.webmanifest",
+  openGraph: {
+    type: "website",
+    locale: "ar_SA",
+    url: "https://hlachick.com",
+    title: "HlaChick - منصة استثمار بمشاريع الدواجن",
+    description: "منصة رقمية للاستثمار في تربية الدواجن ومتابعة الأرباح بشكل شفاف وآمن",
+    siteName: "HlaChick",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HlaChick - منصة استثمار بمشاريع الدواجن",
+    description: "منصة رقمية للاستثمار في تربية الدواجن ومتابعة الأرباح بشكل شفاف وآمن",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
